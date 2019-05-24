@@ -1,0 +1,23 @@
+{
+  "name": "omysql",
+  "version": "0.0.1",
+  "description": "Easy way to use mysql",
+  "main": "index.js",
+  "author": "clpliuping@126.com",
+  "scripts": {
+    "lint": "node_modules/.bin/eslint -c .eslintrc.json index.js omysql.js utils.js sql-builder.js"
+  },
+  "dependencies": {
+    "mysql": "2.17.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.2.1",
+    "eslint": "4.15.0",
+    "eslint-config-standard": "11.0.0-beta.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-standard": "3.0.1"
+  }
+}
