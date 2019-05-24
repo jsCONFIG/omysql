@@ -1,7 +1,7 @@
 # omysql
 
-[![defaultExtname](http://img.shields.io/npm/v/default-extname.svg)](https://www.npmjs.org/package/default-extname)
-[![defaultExtname](http://img.shields.io/npm/dm/default-extname.svg)](https://www.npmjs.org/package/default-extname)
+[![defaultExtname](http://img.shields.io/npm/v/omysql.svg)](https://www.npmjs.org/package/omysql)
+[![defaultExtname](http://img.shields.io/npm/dm/omysql.svg)](https://www.npmjs.org/package/omysql)
 
 Easy way to use mysql
 
@@ -51,7 +51,7 @@ console.log(sqlStr);
  */
 ```
 
-## OMysql instance
+## new OMysql(config)
 
 ```javascript
 const OMysql = require('omysql');
