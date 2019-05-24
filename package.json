@@ -3,9 +3,31 @@
   "version": "0.0.1",
   "description": "Easy way to use mysql",
   "main": "index.js",
-  "author": "clpliuping@126.com",
   "scripts": {
     "lint": "node_modules/.bin/eslint -c .eslintrc.json index.js omysql.js utils.js sql-builder.js"
+  },
+  "repository": {
+      "type": "git",
+      "url": "git@github.com:jsCONFIG/omysql.git"
+  },
+  "keywords": [
+      "node",
+      "mysql",
+      "omysql"
+  ],
+  "author": {
+      "name": "BottleLiu",
+      "email": "clpliuping@126.com"
+  },
+  "licenses": [
+      {
+          "type": "MIT",
+          "url": "http://www.opensource.org/licenses/mit-license.php"
+      }
+  ],
+  "readmeFilename": "README.md",
+  "bugs": {
+      "url": "https://github.com/jsCONFIG/omysql/issues"
   },
   "dependencies": {
     "mysql": "2.17.1"
