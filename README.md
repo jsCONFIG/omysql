@@ -26,7 +26,7 @@ const mysqlHub = new OMysql({
 });
 
 // 1、Query: `where gender = 'male' and age = 18`
-const data = mysqlHub.query(['id', 'name'], 'user_info_table', {
+const data = await mysqlHub.query(['id', 'name'], 'user_info_table', {
     gender: 'male',
     age: 18
 });
@@ -36,7 +36,7 @@ const data = mysqlHub.query(['id', 'name'], 'user_info_table', {
 ```javascript
 const OMysql = require('omysql');
 
-// Generater Sql string
+// Generate Sql string
 const sqlStr = OMysql.sqlBuilder.query(['id', 'name'], 'user_info_table', {
     gender: 'male',
     age: 18
@@ -143,3 +143,59 @@ If the target can't find, insert a new record.
 #### omysqlInst.beginTransaction(taskCoreFn)
 
 Mysql transaction. Wrap the `taskCoreFn(connection)` with transaction.
+
+## Schema
+
+Used to inset/modify data.
+
+__For example: `usr_table`__
+
+usr|create_time|update_item
+---|---|---
+usr1|2019-01-01 01:00|2019-01-01 01:00
+
+```javascript
+const moment = require('moment');
+
+const getCurrentTimestamp = () => {
+    return moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+};
+
+const USR_TABLE_SCHEMA = {
+    // key name
+    create_time: {
+        // Can't be modified.
+        frozen: true,
+        // Generate default value.
+        createDef: getCurrentTimestamp
+    },
+    update_time: {
+        createDef: getCurrentTimestamp
+    }
+};
+
+// insert data(Time: 2019-02-25 02:25)
+await omysqlInst.insert(
+    'usr_table',
+    {usr: 'ocean'},
+    USR_TABLE_SCHEMA
+);
+
+// update data(Time: 2019-06-08 06:08)
+await omysqlInst.update(
+    'usr_table',
+    // condition for target.
+    {usr: 'usr1'},
+    // new data
+    {usr: 'bottle'},
+    USR_TABLE_SCHEMA
+);
+
+```
+
+__The latest data.__
+
+usr|create_time|update_item
+---|---|---
+bottle|2019-01-01 01:00|2019-06-08 06:08
+ocean|2019-02-25 02:25|2019-02-25 02:25
