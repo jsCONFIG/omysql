@@ -14,10 +14,10 @@ class OMysql {
             database: null
         }, props);
     };
-    setConfig = (config) => {
+    setConfig (config) {
         this.config = Object.assign(this.config, config);
     };
-    createPool = async (db) => {
+    async createPool (db) {
         const { config } = this;
         try {
             return await mysql.createPool({
@@ -33,12 +33,12 @@ class OMysql {
             return Promise.reject(e.message || 'Create Pool failed.');
         }
     };
-    createConnection = async (db) => {
+    async createConnection (db) {
         const pool = await this.createPool(db);
         return pool.getConnection();
     };
     // Execute SQL.
-    queryCore = async (queryStr, params = [], keepConnection) => {
+    async queryCore (queryStr, params = [], keepConnection) {
         const connection = await this.createConnection();
         const result = await connection.execute(
             queryStr,
@@ -65,7 +65,7 @@ class OMysql {
      * @param  {String} extra     补充说明，如LIMIT xxx, ORDER BY xxxx
      * @return {[type]}           [description]
      */
-    query = async (items, tableName, filters, extra) => {
+    async query (items, tableName, filters, extra) {
         let queryParams = sqlParamsBuilder.query(items, tableName, filters, extra);
         if (!queryParams) {
             return false;
@@ -74,7 +74,7 @@ class OMysql {
         return res;
     };
 
-    queryAll = async (items, tableName, extra) => {
+    async queryAll (items, tableName, extra) {
         let queryParams = sqlParamsBuilder.queryAll(items, tableName, extra);
         if (!queryParams) {
             return false;
@@ -84,7 +84,7 @@ class OMysql {
     };
 
     // Query one，return `false` if is not exist.
-    queryOne = async (tableName, filters) => {
+    async queryOne (tableName, filters) {
         let queryParams = sqlParamsBuilder.queryOne(tableName, filters);
         if (!queryParams) {
             return false;
@@ -92,7 +92,7 @@ class OMysql {
         const result = (await this.queryCore(queryParams.sqlStr, queryParams.params));
         return result[0];
     };
-    del = async (tableName, filters) => {
+    async del (tableName, filters) {
         let queryParams = sqlParamsBuilder.del(tableName, filters);
         if (!queryParams) {
             return false;
@@ -108,7 +108,7 @@ class OMysql {
      * @param  {[type]}  schema    [description]
      * @return {Promise}           [description]
      */
-    insert = async (tableName, items, schema) => {
+    async insert (tableName, items, schema) {
         let queryParams = sqlParamsBuilder.insert(tableName, items, schema);
         if (!queryParams) {
             return false;
@@ -134,7 +134,7 @@ class OMysql {
      * @param  {[type]}  schema     [description]
      * @return {Promise}            [description]
      */
-    insertBatch = async (tableName, itemKeys, valuesGroup, schema) => {
+    async insertBatch (tableName, itemKeys, valuesGroup, schema) {
         let queryParams = sqlParamsBuilder.insertBatch(tableName, itemKeys, valuesGroup, schema);
         if (!queryParams) {
             return false;
@@ -143,7 +143,7 @@ class OMysql {
         return true;
     };
 
-    update = async (tableName, filters, items, schema) => {
+    async update (tableName, filters, items, schema) {
         let queryParams = sqlParamsBuilder.update(tableName, filters, items, schema);
         if (!queryParams) {
             return false;
@@ -152,7 +152,7 @@ class OMysql {
         return true;
     };
 
-    updateOrInsert = async (tableName, filters, items, schema) => {
+    async updateOrInsert (tableName, filters, items, schema) {
         if (!tableName || !items || !Object.keys(items).length) {
             return false;
         }
@@ -178,7 +178,7 @@ class OMysql {
     };
 
     // 不存在则插入，否则忽略
-    insertIfNeed = async (tableName, filters, items, schema) => {
+    async insertIfNeed (tableName, filters, items, schema) {
         if (!tableName || !filters || !items || !Object.keys(items).length) {
             return false;
         }
@@ -193,7 +193,7 @@ class OMysql {
     };
 
     // 执行事务
-    beginTransaction = async (taskCoreFn) => {
+    async beginTransaction (taskCoreFn) {
         const connection = await this.createConnection();
         // 开始事务
         await connection.query('START TRANSACTION');
