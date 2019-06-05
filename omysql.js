@@ -198,9 +198,17 @@ class OMysql {
         // 开始事务
         await connection.query('START TRANSACTION');
         // 执行具体内容
-        await taskCoreFn(connection);
-        // 结束事务
-        await connection.query('COMMIT');
+        const flag = await taskCoreFn(connection, {
+            sqlBuilder: sqlParamsBuilder
+        });
+        if (flag === false) {
+            // 回滚事务操作
+            await connection.query('ROLLBACK');
+        }
+        else if (flag === true) {
+            // 提交应用事务
+            await connection.query('COMMIT');
+        }
         connection.release();
     };
 }

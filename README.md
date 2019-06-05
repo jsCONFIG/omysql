@@ -142,7 +142,9 @@ If the target can't find, insert a new record.
 
 #### omysqlInst.beginTransaction(taskCoreFn)
 
-Mysql transaction. Wrap the `taskCoreFn(connection)` with transaction.
+Mysql transaction. Wrap the `taskCoreFn(connection, {sqlBuilder})` with transaction.
+
+Return `true` to commit, or `false` to rollback. If you want to control by your self, return `undefined`.
 
 ## Schema
 
