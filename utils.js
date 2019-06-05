@@ -53,7 +53,17 @@ const splitItemsToGroup = (items) => {
     };
 };
 
+const wrapKey = (key) => {
+    return `\`${key}\``;
+};
+
+const fixKeys = (keys) => {
+    return keys.map(key => `\`${key}\``);
+};
+
 module.exports = {
     resolveItems,
-    splitItemsToGroup
+    splitItemsToGroup,
+    fixKeys,
+    wrapKey
 };
