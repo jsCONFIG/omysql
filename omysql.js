@@ -210,6 +210,7 @@ class OMysql {
             await connection.query('COMMIT');
         }
         connection.release();
+        return flag === true;
     };
 }
 

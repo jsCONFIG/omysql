@@ -144,7 +144,9 @@ If the target can't find, insert a new record.
 
 Mysql transaction. Wrap the `taskCoreFn(connection, {sqlBuilder})` with transaction.
 
-Return `true` to commit, or `false` to rollback. If you want to control by your self, return `undefined`.
+Return `true` if 'COMMIT'
+
+The `taskCoreFn` return `true` to commit, or `false` to rollback. If you want to control by your self, return `undefined`.
 
 ## Schema
 

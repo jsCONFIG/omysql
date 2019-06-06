@@ -1,6 +1,10 @@
 ## CHANGELOG
 ---
 
+#### v0.0.7(20190606)
+
+* Better `beginTransaction`
+
 #### v0.0.6(20190606)
 
 * Fix key wrapper.
