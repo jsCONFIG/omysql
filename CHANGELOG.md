@@ -1,6 +1,11 @@
 ## CHANGELOG
 ---
 
+#### v0.0.6(20190606)
+
+* Fix key wrapper.
+* Better `queryOne`
+
 #### v0.0.5(20190605)
 
 * Better

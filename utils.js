@@ -54,11 +54,19 @@ const splitItemsToGroup = (items) => {
 };
 
 const wrapKey = (key) => {
+    if (
+        (key === '*') ||
+        /^`.+`$/.test(key) ||
+        /^\S+?\(.*\)/.test(key) ||
+        /\S+\s+\S+/.test(key)
+    ) {
+        return key;
+    }
     return `\`${key}\``;
 };
 
 const fixKeys = (keys) => {
-    return keys.map(key => `\`${key}\``);
+    return keys.map(key => wrapKey(key));
 };
 
 module.exports = {

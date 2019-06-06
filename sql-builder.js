@@ -142,9 +142,12 @@ const sqlParamsBuilder = {
             params: []
         };
     },
-    queryOne (tableName, filters) {
-        if (!tableName || !filters) {
+    queryOne (items, tableName, filters) {
+        if (!items || !tableName || !filters) {
             return false;
+        }
+        if (!Array.isArray(items)) {
+            items = [items];
         }
         if (!Array.isArray(filters)) {
             filters = [filters];
@@ -153,7 +156,7 @@ const sqlParamsBuilder = {
         if (!queryStr) {
             return false;
         }
-        let sqlStr = `SELECT * from ${utils.wrapKey(tableName)} WHERE ${queryStr} LIMIT 1`;
+        let sqlStr = `SELECT ${utils.fixKeys(items).join(',')} from ${utils.wrapKey(tableName)} WHERE ${queryStr} LIMIT 1`;
         return {
             sqlStr,
             params

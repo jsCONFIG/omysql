@@ -84,8 +84,8 @@ class OMysql {
     };
 
     // Query one，return `false` if is not exist.
-    async queryOne (tableName, filters) {
-        let queryParams = sqlParamsBuilder.queryOne(tableName, filters);
+    async queryOne (items, tableName, filters) {
+        let queryParams = sqlParamsBuilder.queryOne(items, tableName, filters);
         if (!queryParams) {
             return false;
         }
@@ -164,7 +164,7 @@ class OMysql {
             if (!Array.isArray(filters)) {
                 filters = [filters];
             }
-            let exsitOne = await this.queryOne(tableName, filters);
+            let exsitOne = await this.queryOne('*', tableName, filters);
             // 存在则走更新策略
             if (exsitOne) {
                 await this.update(tableName, filters, items, schema);
@@ -185,7 +185,7 @@ class OMysql {
         if (!Array.isArray(filters)) {
             filters = [filters];
         }
-        const result = await this.queryOne(tableName, filters);
+        const result = await this.queryOne('*', tableName, filters);
         if (!result) {
             await this.insert(tableName, items, schema);
         }
