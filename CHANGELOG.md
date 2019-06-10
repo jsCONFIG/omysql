@@ -1,6 +1,10 @@
 ## CHANGELOG
 ---
 
+#### v0.0.8(20190610)
+
+* Better `beginTransaction`
+
 #### v0.0.7(20190606)
 
 * Better `beginTransaction`
