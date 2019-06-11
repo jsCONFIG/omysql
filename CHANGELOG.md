@@ -1,6 +1,11 @@
 ## CHANGELOG
 ---
 
+#### v0.0.9(20190611)
+
+* Fix the 'group' rule of filters;
+* Add `onError` handler for `beginTransaction`;
+
 #### v0.0.8(20190610)
 
 * Better `beginTransaction`

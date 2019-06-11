@@ -193,7 +193,7 @@ class OMysql {
     };
 
     // 执行事务
-    async beginTransaction (taskCoreFn) {
+    async beginTransaction (taskCoreFn, onError) {
         const connection = await this.createConnection();
         // 开始事务
         await connection.query('START TRANSACTION');
@@ -204,7 +204,9 @@ class OMysql {
                 sqlBuilder: sqlParamsBuilder
             });
         }
-        catch (e) {}
+        catch (e) {
+            onError && onError(e);
+        }
         if (flag === false) {
             // 回滚事务操作
             await connection.query('ROLLBACK');

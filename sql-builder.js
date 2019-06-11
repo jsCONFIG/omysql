@@ -27,7 +27,7 @@ const buildQueryFilter = (filters) => {
         if (paramItem.type === 'group') {
             const { queryStr: childQueryStr, params: childParams } = buildQueryFilter(paramItem.filters || []);
             queryStr.push(
-                idx === 0 ? childQueryStr : `${pRel || 'AND'} (${childQueryStr})`
+                idx === 0 ? `(${childQueryStr})` : `${pRel || 'AND'} (${childQueryStr})`
             );
             params = params.concat(childParams);
         }

@@ -1,6 +1,6 @@
 {
     "name": "omysql",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Easy way to use mysql",
     "main": "index.js",
     "scripts": {
