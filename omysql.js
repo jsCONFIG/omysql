@@ -12,17 +12,18 @@ class OMysql {
             port: 3306,
             user: null,
             database: null,
-            sharePool: true
+            usePool: false
         }, props);
-        this._poolCache = null;
+        this._poolCache = {};
     };
     setConfig (config) {
         this.config = Object.assign(this.config, config);
     };
     async createPool (db) {
         const { config } = this;
-        if (config.sharePool && this._poolCache) {
-            return this._poolCache;
+        const cacheKey = `${config.host}/${config.port}`;
+        if (this._poolCache.hasOwnProperty(cacheKey) && this._poolCache[cacheKey]) {
+            return this._poolCache[cacheKey];
         }
         try {
             const poolInst = await mysql.createPool({
@@ -33,7 +34,7 @@ class OMysql {
                 user: config.user,
                 database: db || config.database
             });
-            this._poolCache = poolInst;
+            this._poolCache[cacheKey] = poolInst;
             return poolInst;
         }
         catch (e) {
@@ -41,12 +42,31 @@ class OMysql {
         }
     };
     async createConnection (db) {
-        const pool = await this.createPool(db);
-        return pool.getConnection();
+        const { config } = this;
+        return mysql.createConnection({
+            host: config.host,
+            password: config.password,
+            port: config.port,
+            user: config.user,
+            database: db || config.database
+        });
+    };
+    async createQueryBase () {
+        let connection;
+        if (this.config.usePool) {
+            connection = (await this.createPool());
+        }
+        else {
+            connection = (await this.createConnection());
+        }
+        return connection;
+    };
+    connectionRelease (connection) {
+        connection.releaseConnection && connection.releaseConnection();
     };
     // Execute SQL.
     async queryCore (queryStr, params = [], keepConnection) {
-        const connection = await this.createConnection();
+        let connection = await this.createQueryBase();
         const result = await connection.execute(
             queryStr,
             params
@@ -57,7 +77,7 @@ class OMysql {
                 result: result[0]
             };
         }
-        connection.release();
+        this.connectionRelease(connection);
         return result[0];
     };
     /**
@@ -125,7 +145,7 @@ class OMysql {
             'SELECT LAST_INSERT_ID()',
             []
         );
-        connection.release();
+        this.connectionRelease(connection);
         lastInsertId = lastInsertId && lastInsertId[0]['LAST_INSERT_ID()'];
         if (typeof lastInsertId !== 'number') {
             lastInsertId = false;
@@ -222,7 +242,7 @@ class OMysql {
             // 提交应用事务
             await connection.query('COMMIT');
         }
-        connection.release();
+        this.connectionRelease(connection);
         return flag === true;
     };
 }
