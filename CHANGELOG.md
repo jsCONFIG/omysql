@@ -1,6 +1,10 @@
 ## CHANGELOG
 ---
 
+#### v0.0.10(20191030)
+
+* Fix bug for pool;
+
 #### v0.0.9(20190611)
 
 * Fix the 'group' rule of filters;

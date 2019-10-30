@@ -11,16 +11,21 @@ class OMysql {
             password: null,
             port: 3306,
             user: null,
-            database: null
+            database: null,
+            sharePool: true
         }, props);
+        this._poolCache = null;
     };
     setConfig (config) {
         this.config = Object.assign(this.config, config);
     };
     async createPool (db) {
         const { config } = this;
+        if (config.sharePool && this._poolCache) {
+            return this._poolCache;
+        }
         try {
-            return await mysql.createPool({
+            const poolInst = await mysql.createPool({
                 connectionLimit: 20,
                 host: config.host,
                 password: config.password,
@@ -28,6 +33,8 @@ class OMysql {
                 user: config.user,
                 database: db || config.database
             });
+            this._poolCache = poolInst;
+            return poolInst;
         }
         catch (e) {
             return Promise.reject(e.message || 'Create Pool failed.');

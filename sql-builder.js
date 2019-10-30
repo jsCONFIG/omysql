@@ -120,10 +120,10 @@ const sqlParamsBuilder = {
             filters = [filters];
         }
         let { queryStr, params } = buildQueryFilter(filters);
-        if (!queryStr) {
-            return false;
+        if (queryStr) {
+            queryStr = `WHERE ${queryStr}`;
         }
-        let sqlStr = `SELECT ${utils.fixKeys(items).join(',')} from ${utils.wrapKey(tableName)} WHERE ${queryStr} ${extra || ''}`;
+        let sqlStr = `SELECT ${utils.fixKeys(items).join(',')} from ${utils.wrapKey(tableName)} ${queryStr} ${extra || ''}`;
         return {
             sqlStr,
             params
@@ -153,10 +153,10 @@ const sqlParamsBuilder = {
             filters = [filters];
         }
         let { queryStr, params } = buildQueryFilter(filters);
-        if (!queryStr) {
-            return false;
+        if (queryStr) {
+            queryStr = `WHERE ${queryStr}`;
         }
-        let sqlStr = `SELECT ${utils.fixKeys(items).join(',')} from ${utils.wrapKey(tableName)} WHERE ${queryStr} LIMIT 1`;
+        let sqlStr = `SELECT ${utils.fixKeys(items).join(',')} from ${utils.wrapKey(tableName)} ${queryStr} LIMIT 1`;
         return {
             sqlStr,
             params
@@ -171,10 +171,10 @@ const sqlParamsBuilder = {
         }
         let sqlStr = `DELETE from ${utils.wrapKey(tableName)}`;
         let { queryStr, params } = buildQueryFilter(filters);
-        if (!queryStr) {
-            return false;
+        if (queryStr) {
+            queryStr = `WHERE ${queryStr}`;
         }
-        sqlStr += ` WHERE ${queryStr}`;
+        sqlStr += ` ${queryStr}`;
         return {
             sqlStr,
             params
