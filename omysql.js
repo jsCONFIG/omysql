@@ -12,7 +12,7 @@ class OMysql {
             port: 3306,
             user: null,
             database: null,
-            usePool: false
+            usePool: true
         }, props);
         this._poolCache = {};
     };
