@@ -1,6 +1,10 @@
 ## CHANGELOG
 ---
 
+#### v0.0.13(20191118)
+
+* Fix Pool;
+
 #### v0.0.12(20191114)
 
 * Fix 'usePool' config paramenter  default value to `true`;

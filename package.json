@@ -1,6 +1,6 @@
 {
     "name": "omysql",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Easy way to use mysql",
     "main": "index.js",
     "scripts": {
@@ -30,7 +30,7 @@
         "url": "https://github.com/jsCONFIG/omysql/issues"
     },
     "dependencies": {
-        "mysql2": "1.6.5"
+        "mysql2": "2.0.0"
     },
     "devDependencies": {
         "babel-eslint": "8.2.1",

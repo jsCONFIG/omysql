@@ -27,7 +27,7 @@ class OMysql {
         }
         try {
             const poolInst = await mysql.createPool({
-                connectionLimit: 20,
+                connectionLimit: config.connectionLimit,
                 host: config.host,
                 password: config.password,
                 port: config.port,
@@ -62,7 +62,9 @@ class OMysql {
         return connection;
     };
     connectionRelease (connection) {
-        connection.releaseConnection && connection.releaseConnection();
+        if (!this.config.usePool) {
+            connection.end && connection.end();
+        }
     };
     // Execute SQL.
     async queryCore (queryStr, params = [], keepConnection) {
@@ -221,7 +223,15 @@ class OMysql {
 
     // 执行事务
     async beginTransaction (taskCoreFn, onError) {
-        const connection = await this.createConnection();
+        let connection;
+        let pool;
+        if (this.config.usePool) {
+            pool = await this.createPool();
+            connection = await pool.getConnection();
+        }
+        else {
+            connection = await this.createConnection();
+        }
         // 开始事务
         await connection.query('START TRANSACTION');
         let flag = false;
@@ -242,7 +252,12 @@ class OMysql {
             // 提交应用事务
             await connection.query('COMMIT');
         }
-        this.connectionRelease(connection);
+        if (this.config.usePool) {
+            connection.release();
+        }
+        else {
+            connection.destroy();
+        }
         return flag === true;
     };
 }
